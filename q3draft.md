@@ -24,9 +24,9 @@
 
 - **评委结果变量**：`judge_mean`（每周评委平均分）
 - **粉丝结果变量**：`logit_F = log(F_mean/(1-F_mean))`  
-  （因投票份额在 (0,1) 区间，为适配线性误差结构，对份额进行 logit 变换）
+  （因投票份额在 $(0,1)$ 区间，为适配线性误差结构，对份额进行 logit 变换）
 - **控制变量**：赛季/周差异（season/week 相关控制），评委人数（`judge_count`）等
-- **解释变量（固定效应）**：年龄（`age10 = age/10`），行业（`industry`）
+- **解释变量（固定效应）**：年龄（$age10 = age/10$），行业（`industry`）
 - **随机效应（Random Effects）**：职业舞者 pro 的随机截距；明星（celebrity）随机截距（处理重复测量）
 
 > 注：粉丝投票并非观测真值，而是 Q1 反演得到的后验均值/区间估计。主模型使用后验均值作为 proxy；其不确定性在局限性部分讨论。
@@ -57,50 +57,50 @@
 
 ---
 
-### Q3.3.2 模型 1：表现（weeks_survived）
+### Q3.3.2 模型 1：表现（weeks\_survived）
 
 我们使用混合效应模型估计年龄与行业对“坚持周数”的影响，并引入职业舞者与赛季的随机截距：
 
-\[
+$$
 weeks\_survived_{i,s}
-= \beta_0 + \beta_{age}\,age10_i + \beta_{ind}\,Industry_i
+= \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i
 + u_{pro(i)} + u_{season(s)} + \epsilon_{i,s}
-\]
+$$
 
 其中：
-- \(u_{pro}\)：职业舞者层面的系统差异（某些 pro 稳定更“带走远”）
-- \(u_{season}\)：赛季整体差异（某些赛季整体更“难走远”或淘汰更激烈）
-- \(\epsilon\)：随机误差
+- $u_{pro}$：职业舞者层面的系统差异（某些 pro 稳定更“带走远”）
+- $u_{season}$：赛季整体差异（某些赛季整体更“难走远”或淘汰更激烈）
+- $\epsilon$：随机误差
 
 ---
 
-### Q3.3.3 模型 2：评委评分（judge_mean）
+### Q3.3.3 模型 2：评委评分（judge\_mean）
 
 在周面板下对评委评分建模：
 
-\[
+$$
 judge\_mean_{i,t,s}
-= \beta_0 + \beta_{age}\,age10_i + \beta_{ind}\,Industry_i
-+ \gamma_s + \delta_t + \beta_c\,judge\_count
+= \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i
++ \gamma_s + \delta_t + \beta_c\, judge\_count
 + u_{pro(i)} + u_{celebrity(i)} + \epsilon
-\]
+$$
 
 其中：
-- \(\gamma_s,\delta_t\)：分别用于控制赛季与周差异（评分尺度/主题周影响等）
-- \(u_{celebrity}\)：明星随机截距，处理同一明星跨周重复测量导致的相关性
+- $\gamma_s,\delta_t$：分别用于控制赛季与周差异（评分尺度/主题周影响等）
+- $u_{celebrity}$：明星随机截距，处理同一明星跨周重复测量导致的相关性
 
 ---
 
-### Q3.3.4 模型 3：粉丝投票（logit_F）
+### Q3.3.4 模型 3：粉丝投票（logit(F)）
 
 对 Q1 推断的粉丝投票份额做 logit 变换后建模：
 
-\[
+$$
 logit(F_{i,t,s})
-= \beta_0 + \beta_{age}\,age10_i + \beta_{ind}\,Industry_i
-+ \gamma_s + \delta_t + \beta_c\,judge\_count
+= \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i
++ \gamma_s + \delta_t + \beta_c\, judge\_count
 + u_{pro(i)} + u_{celebrity(i)} + \epsilon
-\]
+$$
 
 该模型用于回答年龄/行业/pro 是否显著影响粉丝投票偏好（通过 logit 份额的增减体现）。
 
@@ -120,24 +120,24 @@ logit(F_{i,t,s})
 
 ## Q3.4 结果（Results）
 
-### Q3.4.1 RQ1：哪些因素影响“走多远”（weeks_survived）？影响多大？
+### Q3.4.1 RQ1：哪些因素影响“走多远”（weeks\_survived）？影响多大？
 
 **（1）年龄效应显著为负。**  
-在控制行业、赛季差异与职业舞者影响后，年龄每增加 10 岁，`weeks_survived` 平均减少约 **0.54 周**（\(\beta_{age10}=-0.541\), p≈6.7e-07）。这说明年龄与“走多远”呈显著负相关：年纪更大的明星平均更早出局。
+在控制行业、赛季差异与职业舞者影响后，年龄每增加 10 岁，`weeks_survived` 平均减少约 **0.54 周**（$\beta_{age10}=-0.541$, $p\approx 6.7\times 10^{-7}$）。这说明年龄与“走多远”呈显著负相关：年纪更大的明星平均更早出局。
 
 **（2）行业存在少数显著差异。**  
 相对基准行业，部分行业的 `weeks_survived` 系数显著为负，例如 `Model`（约 -2.67）、`Radio Personality`（约 -2.82），也存在边缘显著的行业差异（如 `Beauty Pagent`、`TV Personality`）。为保证论述清晰，正文建议挑选 2–3 个“显著且解释直观”的行业进行解释，并将其余行业完整结果放入附录或表格。
 
-![图3.1 行业对 weeks_survived 的影响（95% CI）](figs/fig2_industry_effects_weeks.png)
+![图3.1 行业对 weeks\_survived 的影响（95% CI）](figs/fig2_industry_effects_weeks.png)
 
-**图3.1** 行业对“走多远（weeks_survived）”的影响系数与 95% 置信区间（相对基准行业；展示 p 值最小的前若干行业）。
+**图3.1** 行业对“走多远（weeks\_survived）”的影响系数与 95% 置信区间（相对基准行业；展示 $p$ 值最小的前若干行业）。
 
 **（3）职业舞者影响存在但占比小，赛季差异占比更大。**  
 通过方差分解，`weeks_survived` 的总变异中，赛季层面的随机效应占比约 **47.6%**，职业舞者随机效应占比约 **5.9%**，其余为残差（约 46.5%）。这表明：不同赛季整体环境对“走多远”影响最大；职业舞者确实有系统性影响，但相对较小。
 
-![图3.2 weeks_survived 模型方差分解（pro vs season vs residual）](figs/fig4_variance_decomposition_weeks.png)
+![图3.2 weeks\_survived 模型方差分解（pro vs season vs residual）](figs/fig4_variance_decomposition_weeks.png)
 
-**图3.2** `weeks_survived` 混合效应模型方差分解：赛季差异贡献最大，职业舞者贡献较小但非零。
+**图3.2** `weeks\_survived` 混合效应模型方差分解：赛季差异贡献最大，职业舞者贡献较小但非零。
 
 ---
 
@@ -145,12 +145,14 @@ logit(F_{i,t,s})
 
 **（1）年龄在评委与粉丝两端均显著为负，但强弱不同。**
 
-- 在评委模型中，年龄每 +10 岁使评委平均分降低约 **0.36 分**（\(\beta_{age10}=-0.3605\), p≈3.5e-26）。
-- 在粉丝模型中，年龄每 +10 岁使 `logit(F)` 降低约 **0.085**（\(\beta_{age10}=-0.0854\), p≈0.002），对应投票 odds ratio 约为  
-  \[
-  \exp(-0.0854)\approx0.918
-  \]
-  即投票优势约下降 **8.2%**。
+- 在评委模型中，年龄每 $+10$ 岁使评委平均分降低约 **0.36 分**（$\beta_{age10}=-0.3605$, $p\approx 3.5\times 10^{-26}$）。
+- 在粉丝模型中，年龄每 $+10$ 岁使 $logit(F)$ 降低约 **0.085**（$\beta_{age10}=-0.0854$, $p\approx 0.002$），对应投票 odds ratio 约为：
+
+$$
+\exp(-0.0854)\approx 0.918
+$$
+
+即投票优势约下降 **8.2%**。
 
 因此，年龄对评委与粉丝的影响方向一致（都更偏好年轻），但评委端的惩罚更强、更显著。
 
@@ -177,9 +179,9 @@ logit(F_{i,t,s})
 
 （可选）若需要进一步展示“带走远”，可以给出职业舞者对 `weeks_survived` 的 Top/Bottom 排名：
 
-![图3.5 职业舞者对 weeks_survived 的 Top/Bottom 排名](figs/fig8_pro_rank_weeks.png)
+![图3.5 职业舞者对 weeks\_survived 的 Top/Bottom 排名](figs/fig8_pro_rank_weeks.png)
 
-**图3.5** 控制年龄、行业与赛季差异后，职业舞者对 `weeks_survived` 的随机效应排名（Top/Bottom）。
+**图3.5** 控制年龄、行业与赛季差异后，职业舞者对 `weeks\_survived` 的随机效应排名（Top/Bottom）。
 
 ---
 
@@ -209,4 +211,5 @@ logit(F_{i,t,s})
 ## Q3.7 结论（Direct Answers）
 
 职业舞者与明星特征均会影响比赛表现。年龄对 `weeks_survived`、评委评分与粉丝投票均呈显著负向影响，其中评委端效应更强；行业在评委与粉丝端的影响并不完全一致，揭示了专业标准与观众偏好的差异。职业舞者存在系统性“带分/带票/带走远”效应，但对 `weeks_survived` 的解释力相对较小，而赛季层面的整体差异贡献最大。
+
 
