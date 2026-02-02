@@ -74,12 +74,7 @@ $$weeks\_survived_{i,s} = \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Indust
 
 在周面板下对评委评分建模：
 
-$$
-judge\_mean_{i,t,s}
-= \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i
-+ \gamma_s + \delta_t + \beta_c\, judge\_count
-+ u_{pro(i)} + u_{celebrity(i)} + \epsilon
-$$
+$$judge\_mean_{i,t,s} = \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i + \gamma_s + \delta_t + \beta_c\, judge\_count + u_{pro(i)} + u_{celebrity(i)} + \epsilon$$
 
 其中：
 - $\gamma_s,\delta_t$：分别用于控制赛季与周差异（评分尺度/主题周影响等）
@@ -91,12 +86,7 @@ $$
 
 对 Q1 推断的粉丝投票份额做 logit 变换后建模：
 
-$$
-logit(F_{i,t,s})
-= \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i
-+ \gamma_s + \delta_t + \beta_c\, judge\_count
-+ u_{pro(i)} + u_{celebrity(i)} + \epsilon
-$$
+$$logit(F_{i,t,s}) = \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i + \gamma_s + \delta_t + \beta_c\, judge\_count + u_{pro(i)} + u_{celebrity(i)} + \epsilon$$
 
 该模型用于回答年龄/行业/pro 是否显著影响粉丝投票偏好（通过 logit 份额的增减体现）。
 
@@ -144,9 +134,7 @@ $$
 - 在评委模型中，年龄每 $+10$ 岁使评委平均分降低约 **0.36 分**（$\beta_{age10}=-0.3605$, $p\approx 3.5\times 10^{-26}$）。
 - 在粉丝模型中，年龄每 $+10$ 岁使 $logit(F)$ 降低约 **0.085**（$\beta_{age10}=-0.0854$, $p\approx 0.002$），对应投票 odds ratio 约为：
 
-$$
-\exp(-0.0854)\approx 0.918
-$$
+$$\exp(-0.0854)\approx 0.918$$
 
 即投票优势约下降 **8.2%**。
 
@@ -207,6 +195,7 @@ $$
 ## Q3.7 结论（Direct Answers）
 
 职业舞者与明星特征均会影响比赛表现。年龄对 `weeks_survived`、评委评分与粉丝投票均呈显著负向影响，其中评委端效应更强；行业在评委与粉丝端的影响并不完全一致，揭示了专业标准与观众偏好的差异。职业舞者存在系统性“带分/带票/带走远”效应，但对 `weeks_survived` 的解释力相对较小，而赛季层面的整体差异贡献最大。
+
 
 
 
