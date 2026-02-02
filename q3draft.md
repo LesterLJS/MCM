@@ -61,7 +61,7 @@
 
 我们使用混合效应模型估计年龄与行业对“坚持周数”的影响，并引入职业舞者与赛季的随机截距：
 
-$weeks\_survived_{i,s} = \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i + u_{pro(i)} + u_{season(s)} + \epsilon_{i,s}$
+$$weeks\_survived_{i,s} = \beta_0 + \beta_{age}\, age10_i + \beta_{ind}\, Industry_i + u_{pro(i)} + u_{season(s)} + \epsilon_{i,s}$$
 
 其中：
 - $u_{pro}$：职业舞者层面的系统差异（某些 pro 稳定更“带走远”）
@@ -207,6 +207,7 @@ $$
 ## Q3.7 结论（Direct Answers）
 
 职业舞者与明星特征均会影响比赛表现。年龄对 `weeks_survived`、评委评分与粉丝投票均呈显著负向影响，其中评委端效应更强；行业在评委与粉丝端的影响并不完全一致，揭示了专业标准与观众偏好的差异。职业舞者存在系统性“带分/带票/带走远”效应，但对 `weeks_survived` 的解释力相对较小，而赛季层面的整体差异贡献最大。
+
 
 
 
